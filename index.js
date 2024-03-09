@@ -1,7 +1,11 @@
 
-const { log } = require("console");
-const fs = require("fs");
-const { title } = require("process");
+import fs from "fs";
+
+import  Express  from "express";
+
+const app = Express()
+app.use(Express.urlencoded({extended:true}));
+
 class ProductManager {
     static id = 0;
     Nombre;
@@ -14,26 +18,25 @@ class ProductManager {
         this.path = path
     }
     
-        addProduct(title, description, price, thumbnail, code, stock, id) {
-        // Convertir el código a un entero
+        addProduct(title, description, price, thumbnail, code, stock, id) { // Convertir el código a un entero
         const codeAsInt = parseInt(code);
-        // Verificar si el código es un número
+        
         if (isNaN(codeAsInt)) {
             console.log("El código debe ser un entero.");
             return;
         }
     
-        // Buscar un producto existente con el mismo código
+       
         const existingProduct = this.products.find((prod) => prod.code === codeAsInt);
-        // Verificar si ya existe un producto con el mismo código
+       
         if (existingProduct) {
             console.log("El producto ya existe.");
             return existingProduct;
         }
     
-        // Crear un nuevo producto
+        
         const newProduct = {
-            id: id !== undefined ? id : ProductManager.id, // Utilizar el id proporcionado o generar uno nuevo
+            id: id !== undefined ? id : ProductManager.id, 
             title,
             description,
             price,
@@ -42,22 +45,22 @@ class ProductManager {
             code: codeAsInt,
         };
     
-        // Agregar el nuevo producto a la lista de productos
+      
         this.products.push(newProduct);
-        // creamos el archivo products.json y se agrego el array de productos
+        
         fs.writeFileSync(this.path, JSON.stringify(this.products))
         
     
-        // Incrementar el contador de id si no se proporcionó un id específico
+       
         if (id === undefined) {
             ProductManager.id++;
         } else {
             console.log("Producto actualizado correctamente.");
         }
     
-        // Mostrar mensajes de éxito
+        
         console.log("Producto agregado correctamente.");
-        return newProduct; // Devolver el nuevo producto
+        return newProduct; 
     }
     
 
@@ -119,44 +122,69 @@ class ProductManager {
             
             
         }
-
+        
     }
 }
-
-
-
-
-const Producto = new ProductManager("Tienda chino","../Desafios/products.json");
-
-    
-
-
-
-
-    setTimeout(() => {
-        const nuevoProducto = Producto.addProduct("Crema Corporal", "Descripción2", 2500, "linkDeLaImagen", 12343, 8, 6);
-        const nuevoProducto2 = Producto.addProduct("Crema Corporal2", "Descripción2", 2500, "linkDeLaImagen2", 12346, 22, 4);
-        const nuevoProducto3 = Producto.addProduct("Crema Corporal3", "Descripción3", 300, "linkDeLaImagen3", 12345, 10, 3); // Esto mostrará el mensaje de producto existent
-        console.log('=================Producto.getProducts()===================');
-        console.log(Producto.getProducts());
-        console.log('==============Producto.getProducts()======================'); 
-        console.log('=================getProductById(6)===================');
-        console.log(Producto.getProductById(6));
-        console.log('================getProductById(6)===================='); 
+ 
+const Productos = new ProductManager("Tienda chino","../Desafios/products.json");
+const nuevoProducto = Productos.addProduct("Crema Corporal", "Descripción2", 2500, "linkDeLaImagen", 12343, 8, 1);
+const nuevoProducto2 = Productos.addProduct("Crema Corporal2", "Descripción2", 2500, "linkDeLaImagen2", 123410, 22, 2);
+const nuevoProducto3 = Productos.addProduct("Arroz", "Descripción3", 3090, "linkDeLaImagen3", 12345, 10, 3); 
+const nuevoProducto4 = Productos.addProduct("Pasta", "Descripción3", 2500, "linkDeLaImagen3", 12346, 10, 4);
+const nuevoProducto5 = Productos.addProduct("Leche", "Descripción3", 1000, "linkDeLaImagen3", 12347, 10, 5);
+const nuevoProducto6 = Productos.addProduct("Queso Cremoso", "Descripción2", 2000, "linkDeLaImagen", 12348, 8, 10);
+const nuevoProducto7 = Productos.addProduct("Galletitas de agua", "Descripción2", 2000, "linkDeLaImagen2", 123411, 22, 6);
+const nuevoProducto8 = Productos.addProduct("Aceitunas", "Descripción3", 3000, "linkDeLaImagen3", 12349, 10, 7); 
+const nuevoProducto9 = Productos.addProduct("Queso crema", "Descripción3", 3200, "linkDeLaImagen3", 12341, 10, 8);
+const nuevoProducto10 = Productos.addProduct("Queso azul", "Descripción3", 4000, "linkDeLaImagen3", 12342, 10, 9);
+// setTimeout(() => {
+//         console.log('=================Producto.getProducts()===================');
+//         console.log(Productos.getProducts());
+//         console.log('==============Producto.getProducts()======================'); 
+//         console.log('=================getProductById(6)===================');
+//         console.log(Productos.getProductById(3));
+//         console.log('================getProductById(6)===================='); 
 
    
-        console.log('================actualizacion====================');
-        // las propiedades para editar son (id, atributo que vamos a actulazr, actualizacion)
-        console.log(Producto.updateProduct(6,"title","titulo actualizado"));
-        console.log('===================actualizacion=================');
+//         console.log('================actualizacion====================');
+//         // las propiedades para editar son (id, atributo que vamos a actulazr, actualizacion)
+//         console.log(Productos.updateProduct(3,"title","titulo actualizado"));
+//         console.log('===================actualizacion=================');
 
-        console.log('=================getProductById(6)Actualizado===================');
-        console.log(Producto.getProductById(6));
-        console.log('================getProductById(6)Actualizado===================='); 
-        
-        Producto.deleteProduct(3)
-        console.log('=================eliminamos el producto con id 3===================');
-        console.log(Producto.getProducts());
-        console.log('==============eliminamos el producto con id 3======================'); 
+//         console.log('=================getProductById(6)Actualizado===================');
+//         console.log(Productos.getProductById(3));
+//         console.log('================getProductById(6)Actualizado===================='); 
 
-    }, 1000);
+//         Productos.deleteProduct(3)
+//         console.log('=================eliminamos el producto con id 3===================');
+//         console.log(Productos.getProducts());
+//         console.log('==============eliminamos el producto con id 3======================'); 
+
+//     }, 2000);
+
+    app.get("/products",(req, res)=>{
+        res.send(Productos.getProducts());
+    })
+
+    app.get("/products/:idProduct",(req, res)=>{
+        const idProduct = req.params.idProduct;
+        let producto = Productos.getProductById(parseInt(idProduct))
+        if(!producto){
+            return res.send({
+                error:"usuario no encontrado"
+            }) 
+        }
+        return res.send(producto)
+    })
+    app.get("/product", (req, res) => {
+        const { limit } = req.query; 
+        const allProducts = Productos.getProducts(); 
+        const limitedProducts = limit ? allProducts.slice(0, parseInt(limit, 10)) : allProducts; 
+        res.send(limitedProducts);
+    });   
+const PORT = 8080;
+app.listen(PORT,()=>{
+    console.log('====================================');
+    console.log("servidor activo en http://localhost:"+PORT);
+    console.log('====================================');
+})    
