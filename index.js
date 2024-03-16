@@ -162,11 +162,11 @@ const nuevoProducto10 = Productos.addProduct("Queso azul", "Descripción3", 4000
 
 //     }, 2000);
 
-    app.get("/products",(req, res)=>{
+    app.get("/api/products",(req, res)=>{
         res.send(Productos.getProducts());
     })
 
-    app.get("/products/:idProduct",(req, res)=>{
+    app.get("/api/products/:idProduct",(req, res)=>{
         const idProduct = req.params.idProduct;
         let producto = Productos.getProductById(parseInt(idProduct))
         if(!producto){
@@ -176,7 +176,7 @@ const nuevoProducto10 = Productos.addProduct("Queso azul", "Descripción3", 4000
         }
         return res.send(producto)
     })
-    app.get("/product", (req, res) => {
+    app.get("/api/product", (req, res) => {
         const { limit } = req.query; 
         const allProducts = Productos.getProducts(); 
         const limitedProducts = limit ? allProducts.slice(0, parseInt(limit, 10)) : allProducts; 

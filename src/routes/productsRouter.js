@@ -1,5 +1,16 @@
 import { Router } from "express";
 import fs from "fs";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Obtén la ruta al archivo actual a partir de import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+// Ahora obtén el directorio actual a partir de __filename
+const __dirname = path.dirname(__filename);
+
+// Ahora puedes construir la ruta al archivo products.json correctamente
+const productsPath = path.join(__dirname, 'products.json');
+
 
 const router = Router()
 class ProductManager {
@@ -63,7 +74,7 @@ class ProductManager {
     getProducts() {
         if (fs.existsSync(this.path)) {
             let arr = []
-            let productsJson = fs.readFileSync("./products.json", "utf8")
+            let productsJson = fs.readFileSync("/products.json", "utf8")
             arr = JSON.parse(productsJson)
             return arr 
         } else{
@@ -75,7 +86,7 @@ class ProductManager {
     getProductById(id) {
         if (fs.existsSync(this.path)) {
             let arr = []
-            let productsJson = fs.readFileSync("./products.json", "utf8")
+            let productsJson = fs.readFileSync("/products.json", "utf8")
             arr = JSON.parse(productsJson)
       
             let arrFiltrado = arr.find((prod) => prod.id === id)
@@ -89,7 +100,7 @@ class ProductManager {
     updateProduct(id, atributo, cambio){
         if (fs.existsSync(this.path)) {
             let arr = []
-            let productsJson = fs.readFileSync("./products.json", "utf8")
+            let productsJson = fs.readFileSync("/products.json", "utf8")
             arr = JSON.parse(productsJson)
             let arrFiltrado = arr.find((prod) => prod.id === id)
             arrFiltrado[atributo] = cambio
@@ -106,7 +117,7 @@ class ProductManager {
     deleteProduct(id){
         if (fs.existsSync(this.path)) {
             let arr = []
-            let productsJson = fs.readFileSync("./products.json", "utf8")
+            let productsJson = fs.readFileSync("/products.json", "utf8")
             arr = JSON.parse(productsJson)
             let arrFiltrado = arr.filter((prod) => prod.id !== id)
             let nuevoArr = arrFiltrado
@@ -124,13 +135,21 @@ class ProductManager {
 }
  
 
-const Productos = new ProductManager("Tienda chino","/products.json");
+const Productos = new ProductManager("Tienda chino",productsPath);
+
+
 router.get("/",(req, res)=>{
     res.send(Productos.getProducts());
 })
 
-router.get("/",(req, res)=>{
+router.get("/api/products/:idProduct",(req, res)=>{
     const idProduct = req.params.idProduct;
+    console.log('================idProduct====================');
+    console.log(idProduct);
+    console.log('=================idProduct===================');
+    console.log('==================Productos==================');
+    console.log(Productos);
+    console.log('================Productos====================');
     let producto = Productos.getProductById(parseInt(idProduct))
     if(!producto){
         return res.status(400).send({
@@ -139,7 +158,7 @@ router.get("/",(req, res)=>{
     }
     return res.send(producto)
 })
-router.get("/", (req, res) => {
+router.get("/api/product", (req, res) => {
     const { limit } = req.query; 
     const allProducts = Productos.getProducts(); 
     const limitedProducts = limit ? allProducts.slice(0, parseInt(limit, 10)) : allProducts; 

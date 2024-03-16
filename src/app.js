@@ -4,14 +4,14 @@ import productsRouter from "./routes/productsRouter.js"
 
 
 const app = express()
-app.use(express.json)
+app.use(express.json())
 app.use(express.urlencoded({extended:true}));
 
 // use router
-app.get("/api/products",productsRouter)
-app.get("/api/product", productsRouter ) 
-app.get("/api/products/:idProduct", productsRouter )
-app.post("/", productsRouter )
+app.use("/", productsRouter)
+app.use("/api/idproduct", productsRouter ) 
+app.use("/api/products/:idProduct", productsRouter )
+app.use("/", productsRouter )
 
 const PORT = 8080;
 app.listen(PORT,()=>{
