@@ -127,6 +127,9 @@ class ProductManager {
 }
  
 const Productos = new ProductManager("Tienda chino","../Desafios/products.json");
+console.log('===================Productos=================');
+console.log(Productos);
+console.log('=================Productos===================');
 const nuevoProducto = Productos.addProduct("Crema Corporal", "Descripción2", 2500, "linkDeLaImagen", 12343, 8, 1);
 const nuevoProducto2 = Productos.addProduct("Crema Corporal2", "Descripción2", 2500, "linkDeLaImagen2", 123410, 22, 2);
 const nuevoProducto3 = Productos.addProduct("Arroz", "Descripción3", 3090, "linkDeLaImagen3", 12345, 10, 3); 
