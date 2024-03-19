@@ -1,10 +1,6 @@
 
 import fs from "fs";
 
-import  Express  from "express";
-
-const app = Express()
-app.use(Express.urlencoded({extended:true}));
 
 
 class ProductManager {
@@ -90,33 +86,17 @@ class ProductManager {
                 productsArray[product][key] = value;
             }
     
-            // Reescribe el archivo con los cambios aplicados
+        
             fs.writeFileSync(this.path, JSON.stringify(productsArray));
     
            
             return productsArray[product];
         } else {
             console.error("El archivo no existe");
-            return null; // O manejar este caso como prefieras
+            return null; 
         }
     }
-    
-    // updateProduct(id, atributo, cambio){
-    //     if (fs.existsSync(this.path)) {
-    //         let arr = []
-    //         let productsJson = fs.readFileSync("./products.json", "utf8")
-    //         arr = JSON.parse(productsJson)
-    //         let arrFiltrado = arr.find((prod) => prod.id === id)
-    //         arrFiltrado[atributo] = cambio
-    //         fs.unlinkSync(this.path)
-    //         fs.writeFileSync(this.path, JSON.stringify(arr))
-
-    //         return arrFiltrado[atributo]
-    //     } else{
-    //         console.error("el producto no existe")
-    //     }  
-    // }
-    
+   
     
     deleteProduct(id){
         if (fs.existsSync(this.path)) {

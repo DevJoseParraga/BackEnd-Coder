@@ -8,11 +8,8 @@ router.get("/",(req, res)=>{
     res.send(Productos.getProducts());
 })
 
-router.get("/api/products/:idProduct",(req, res)=>{
+router.get("/",(req, res)=>{
     const idProduct = req.params.idProduct;
-    console.log('====================================');
-    console.log(idProduct );
-    console.log('====================================');
     let producto = Productos.getProductById(idProduct)
     if(!producto){
         return res.status(400).send({
@@ -21,7 +18,7 @@ router.get("/api/products/:idProduct",(req, res)=>{
     }
     return res.send(producto)
 })
-router.get("/api/product", (req, res) => {
+router.get("/", (req, res) => {
     const { limit } = req.query; 
     const allProducts = Productos.getProducts(); 
     const limitedProducts = limit ? allProducts.slice(0, parseInt(limit, 10)) : allProducts; 
@@ -56,8 +53,11 @@ router.post("/",uploader.array("thumbnail"), (req, res)=>{
 
 })
 
-router.put("/api/put/:id",(req, res)=>{
-    const { id } = req.params; 
+router.put("/api/update/:id",(req, res)=>{
+    const  {id}  = req.params;
+    console.log('====================================');
+    console.log(id);
+    console.log('===================================='); 
     const changes = req.body; 
     delete changes.id;
     const updatedProduct = Productos.updateProduct(id, changes);
@@ -69,7 +69,7 @@ router.put("/api/put/:id",(req, res)=>{
 });
 
 router.delete("/api/delete/:idProduct",(req, res)=>{
-    const  id  = req.params.idProduct;
+    const   id   = req.params.idProduct;
     if(!id){
         res.status(404).json({ error: 'requiere indicar un id para eliminar' });
     }
