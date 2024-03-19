@@ -12,6 +12,8 @@ app.use("/", productsRouter)
 app.use("/api/idproduct", productsRouter ) 
 app.use("/api/products/:idProduct", productsRouter )
 app.use("/", productsRouter )
+app.use("/api/put/:id", productsRouter )
+app.use("/api/delete/:idProduct", productsRouter )
 
 const PORT = 8080;
 app.listen(PORT,()=>{

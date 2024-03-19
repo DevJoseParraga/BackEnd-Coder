@@ -10,7 +10,10 @@ router.get("/",(req, res)=>{
 
 router.get("/api/products/:idProduct",(req, res)=>{
     const idProduct = req.params.idProduct;
-    let producto = Productos.getProductById(parseInt(idProduct))
+    console.log('====================================');
+    console.log(idProduct );
+    console.log('====================================');
+    let producto = Productos.getProductById(idProduct)
     if(!producto){
         return res.status(400).send({
             error:"Producto no encontrado"
@@ -52,5 +55,34 @@ router.post("/",uploader.array("thumbnail"), (req, res)=>{
         }
 
 })
+
+router.put("/api/put/:id",(req, res)=>{
+    const { id } = req.params; 
+    const changes = req.body; 
+    delete changes.id;
+    const updatedProduct = Productos.updateProduct(id, changes);
+    if (updatedProduct) {
+        res.json({ message: 'Producto actualizado con éxito', updatedProduct });
+    } else {
+        res.status(404).json({ error: 'Producto no encontrado o error al actualizar' });
+    }
+});
+
+router.delete("/api/delete/:idProduct",(req, res)=>{
+    const  id  = req.params.idProduct;
+    if(!id){
+        res.status(404).json({ error: 'requiere indicar un id para eliminar' });
+    }
+    
+    Productos.deleteProduct(id)
+    res.status(201).send({message: `producto ${id} se elimino correctamente`})
+
+    
+
+   
+
+})
+
+
 
 export default router;

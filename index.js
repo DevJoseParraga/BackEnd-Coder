@@ -50,64 +50,7 @@ class ProductManager {
         return newProduct;
     }
     
-
-    
-    //     addProduct(title, description, price, thumbnail, code, stock, id) { // Convertir el código a un entero
-    //     const codeAsInt = parseInt(code);
-        
-    //     if (isNaN(codeAsInt)) {
-    //         console.log("El código debe ser un entero.");
-    //         return;
-    //     }
-    
-       
-    //     const existingProduct = this.products.find((prod) => prod.code === codeAsInt);
-       
-    //     if (existingProduct) {
-    //         console.log("El producto ya existe.");
-    //         return existingProduct;
-    //     }
-    
-        
-    //     const newProduct = {
-    //         id: id !== undefined ? id : ProductManager.id, 
-    //         title,
-    //         description,
-    //         price,
-    //         thumbnail,
-    //         stock,
-    //         code: codeAsInt,
-    //     };
-    
-       
-    //     this.products.push(newProduct);
-       
-    //     if (fs.existsSync(this.path)) {
-    //         let arr = []
-    //         let productsJson = fs.readFileSync("./products.json", "utf8")
-    //         arr = JSON.parse(productsJson)
-    //         arr.push(newProduct)
-    //         this.products.push(newProduct);
-    //         fs.writeFileSync(this.path, JSON.stringify(this.products))
-      
-
-    //     }else{
-    //         fs.writeFileSync(this.path, JSON.stringify(this.products))
-    //     }
-        
-    
-       
-    //     if (id === undefined) {
-    //         ProductManager.id++;
-    //     } else {
-    //         console.log("Producto actualizado correctamente.");
-    //     }
-    
-        
-    //     console.log("Producto agregado correctamente.");
-    //     return newProduct; 
-    // }
-    
+   
 
     getProducts() {
         if (fs.existsSync(this.path)) {
@@ -134,22 +77,45 @@ class ProductManager {
         }
          
     }
-
-    updateProduct(id, atributo, cambio){
+    updateProduct(id, changes) {
         if (fs.existsSync(this.path)) {
-            let arr = []
-            let productsJson = fs.readFileSync("./products.json", "utf8")
-            arr = JSON.parse(productsJson)
-            let arrFiltrado = arr.find((prod) => prod.id === id)
-            arrFiltrado[atributo] = cambio
-            fs.unlinkSync(this.path)
-            fs.writeFileSync(this.path, JSON.stringify(arr))
-
-            return arrFiltrado[atributo]
-        } else{
-            console.error("el producto no existe")
-        }  
+            let productsArray = JSON.parse(fs.readFileSync(this.path, "utf8"));
+            const product = productsArray.findIndex(prod => prod.id === id);
+    
+            if (product === -1) {
+                console.error("El producto no existe");
+                return null; 
+            }
+            for (const [key, value] of Object.entries(changes)) {
+                productsArray[product][key] = value;
+            }
+    
+            // Reescribe el archivo con los cambios aplicados
+            fs.writeFileSync(this.path, JSON.stringify(productsArray));
+    
+           
+            return productsArray[product];
+        } else {
+            console.error("El archivo no existe");
+            return null; // O manejar este caso como prefieras
+        }
     }
+    
+    // updateProduct(id, atributo, cambio){
+    //     if (fs.existsSync(this.path)) {
+    //         let arr = []
+    //         let productsJson = fs.readFileSync("./products.json", "utf8")
+    //         arr = JSON.parse(productsJson)
+    //         let arrFiltrado = arr.find((prod) => prod.id === id)
+    //         arrFiltrado[atributo] = cambio
+    //         fs.unlinkSync(this.path)
+    //         fs.writeFileSync(this.path, JSON.stringify(arr))
+
+    //         return arrFiltrado[atributo]
+    //     } else{
+    //         console.error("el producto no existe")
+    //     }  
+    // }
     
     
     deleteProduct(id){
